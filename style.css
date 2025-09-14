@@ -201,8 +201,8 @@ footer {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card img {
-  width: 50%;
-  height: 200px;
+  width: 60%;
+  height:180px;
   object-fit: cover;
 }
 .card-content {
