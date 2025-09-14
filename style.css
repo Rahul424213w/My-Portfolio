@@ -201,9 +201,10 @@ footer {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card img {
-  width: 400px;  
-  height: 300px;     
-  object-fit: contain;
+   width: 250px;       
+  height: auto;       
+  object-fit: contain;  
+  border-radius: 50%;
 }
 .card-content {
   padding: 15px;
