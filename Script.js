@@ -1,4 +1,4 @@
-// Typing animation
+
 const roles = ["Web Developer 💻", "CSE Student 🎓", "Tech Enthusiast 🚀"];
 let roleIndex = 0;
 let charIndex = 0;
@@ -31,7 +31,6 @@ function typeEffect() {
 }
 typeEffect();
 
-// Fade-in on scroll
 const faders = document.querySelectorAll(".fade-in");
 
 function showOnScroll() {
