@@ -406,8 +406,9 @@ section {
 /* PROJECTS */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 28px;
+  align-items: stretch;
 }
 
 .proj-card {
@@ -418,6 +419,9 @@ section {
   transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
   position: relative;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .proj-card::before {
@@ -465,6 +469,9 @@ section {
   padding: 24px;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .proj-tag {
@@ -501,6 +508,7 @@ section {
   border-bottom: 1px solid rgba(200,255,0,0.4);
   padding-bottom: 2px;
   transition: all 0.2s;
+  margin-top: auto;
 }
 .proj-link:hover { color: var(--acid); border-color: var(--acid); }
 .proj-arrow { transition: transform 0.2s; }
