@@ -323,8 +323,8 @@ nav ul a:hover::after {
 
 .hero-robot {
   position: relative;
-  width: 380px; 
-  height: 380px; 
+  width: 380px;
+  height: 380px;
   mix-blend-mode: lighten;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: grab;
@@ -618,10 +618,494 @@ section {
   background: var(--surface);
 }
 
-.skills-container {
+.skills-layout {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+@media (max-width: 768px) {
+  .skills-layout {
+    flex-direction: column;
+  }
+}
+
+.skills-grid-3x3 {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 500px;
+}
+
+@media (max-width: 480px) {
+  .skills-grid-3x3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.skills-animation {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+  min-height: 400px;
+  perspective: 800px;
+}
+
+/* Loader Animation */
+.loader {
+  --dur: 3s;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  transform: scale(1.2);
+}
+
+@media (min-width: 1024px) {
+  .loader {
+    transform: scale(1.6);
+  }
+}
+
+.loader .box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  transform-style: preserve-3d;
+  /* Retain the isometric projection on the box itself */
+  transform: rotateY(-47deg) rotateX(-15deg) rotateZ(15deg);
+}
+
+/* Coordinates and animations for the 8 boxes */
+.loader .box0 {
+  --x: -48px;
+  --y: -48px;
+  animation: box-scale0 var(--dur) linear infinite, box-move0 var(--dur) linear infinite;
+}
+
+.loader .box1 {
+  --x: 0px;
+  --y: -48px;
+  animation: box-scale1 var(--dur) linear infinite, box-move1 var(--dur) linear infinite;
+}
+
+.loader .box2 {
+  --x: 48px;
+  --y: -48px;
+  animation: box-scale2 var(--dur) linear infinite, box-move2 var(--dur) linear infinite;
+}
+
+.loader .box3 {
+  --x: 48px;
+  --y: 0px;
+  animation: box-scale3 var(--dur) linear infinite, box-move3 var(--dur) linear infinite;
+}
+
+.loader .box4 {
+  --x: 48px;
+  --y: 48px;
+  animation: box-scale4 var(--dur) linear infinite, box-move4 var(--dur) linear infinite;
+}
+
+.loader .box5 {
+  --x: 0px;
+  --y: 48px;
+  animation: box-scale5 var(--dur) linear infinite, box-move5 var(--dur) linear infinite;
+}
+
+.loader .box6 {
+  --x: -48px;
+  --y: 48px;
+  animation: box-scale6 var(--dur) linear infinite, box-move6 var(--dur) linear infinite;
+}
+
+.loader .box7 {
+  --x: -48px;
+  --y: 0px;
+  animation: box-scale7 var(--dur) linear infinite, box-move7 var(--dur) linear infinite;
+}
+
+.loader .box>div {
+  width: 100%;
+  height: 100%;
+  background: var(--pink);
+  position: absolute;
+  transform: translateZ(16px);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.loader .box::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--cyan);
+  transform: rotateY(90deg) translateZ(16px);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.loader .box::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--acid);
+  transform: rotateX(90deg) translateZ(16px);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.loader .ground {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: rgba(200, 255, 0, 0.1);
+  top: 50%;
+  left: 50%;
+  margin: -60px 0 0 -60px;
+  transform: rotateX(90deg) translateZ(-40px);
+  border-radius: 50%;
+  filter: blur(10px);
+  animation: ground var(--dur) linear infinite;
+}
+
+.loader .ground>div {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, var(--acid) 0%, transparent 70%);
+  animation: ground-shine var(--dur) linear infinite;
+}
+
+@keyframes box-move0 {
+
+  0%,
+  12% {
+    translate: var(--x) var(--y);
+  }
+
+  25%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale0 {
+
+  0%,
+  6% {
+    scale: 0;
+  }
+
+  14%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move1 {
+
+  0%,
+  16% {
+    translate: var(--x) var(--y);
+  }
+
+  29%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale1 {
+
+  0%,
+  10% {
+    scale: 0;
+  }
+
+  18%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move2 {
+
+  0%,
+  20% {
+    translate: var(--x) var(--y);
+  }
+
+  33%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale2 {
+
+  0%,
+  14% {
+    scale: 0;
+  }
+
+  22%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move3 {
+
+  0%,
+  24% {
+    translate: var(--x) var(--y);
+  }
+
+  37%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale3 {
+
+  0%,
+  18% {
+    scale: 0;
+  }
+
+  26%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move4 {
+
+  0%,
+  28% {
+    translate: var(--x) var(--y);
+  }
+
+  41%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale4 {
+
+  0%,
+  22% {
+    scale: 0;
+  }
+
+  30%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move5 {
+
+  0%,
+  32% {
+    translate: var(--x) var(--y);
+  }
+
+  45%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale5 {
+
+  0%,
+  26% {
+    scale: 0;
+  }
+
+  34%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move6 {
+
+  0%,
+  36% {
+    translate: var(--x) var(--y);
+  }
+
+  49%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale6 {
+
+  0%,
+  30% {
+    scale: 0;
+  }
+
+  38%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes box-move7 {
+
+  0%,
+  40% {
+    translate: var(--x) var(--y);
+  }
+
+  53%,
+  52% {
+    translate: 0 0;
+  }
+
+  80% {
+    translate: 0 -32px;
+  }
+
+  90%,
+  100% {
+    translate: 0 188px;
+  }
+}
+
+@keyframes box-scale7 {
+
+  0%,
+  34% {
+    scale: 0;
+  }
+
+  42%,
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes ground {
+
+  0%,
+  65% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  }
+
+  75%,
+  90% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(1);
+  }
+
+  100% {
+    transform: rotateX(90deg) rotateY(0deg) translate(-48px, -120px) translateZ(100px) scale(0);
+  }
+}
+
+@keyframes ground-shine {
+
+  0%,
+  70% {
+    opacity: 0;
+  }
+
+  75%,
+  87% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes mask {
+
+  0%,
+  65% {
+    opacity: 0;
+  }
+
+  66%,
+  100% {
+    opacity: 1;
+  }
 }
 
 .skill-chip {

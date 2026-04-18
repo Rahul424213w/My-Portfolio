@@ -171,16 +171,7 @@ const initGlobe = async () => {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
-  const handleWheel = (event) => {
-    event.preventDefault();
-    const scaleFactor = event.deltaY > 0 ? 0.9 : 1.1;
-    const newRadius = Math.max(radius * 0.5, Math.min(radius * 3, projection.scale() * scaleFactor));
-    projection.scale(newRadius);
-    render();
-  };
-
   canvas.addEventListener("mousedown", handleMouseDown);
-  canvas.addEventListener("wheel", handleWheel, { passive: false });
 };
 
 document.addEventListener("DOMContentLoaded", initGlobe);
