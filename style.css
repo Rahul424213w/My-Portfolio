@@ -33,13 +33,18 @@ body {
   .cursor {
     display: none !important;
   }
-  body, body * {
+
+  body,
+  body * {
     cursor: auto !important;
   }
 }
 
 @media (min-width: 769px) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     cursor: none !important;
   }
 }
@@ -409,8 +414,7 @@ nav ul a:hover::after {
   pointer-events: none;
 }
 
-.hero-robot:active {
-}
+.hero-robot:active {}
 
 .hero-robot:hover {
   transform: translateY(-8px) scale(1.02);
@@ -1664,4 +1668,35 @@ footer {
   border-radius: 50%;
   box-shadow: 0 0 8px #22c55e;
   animation: dotPulse 2s ease-in-out infinite;
+}
+
+height: 2px;
+background-color: #fb923c;
+/* orange color from reference */
+transition: width 0.3s ease;
+border-radius: 2px;
+}
+
+.nav-item.active::after {
+  width: 20px;
+}
+
+@media (max-width: 600px) {
+  .nav-title {
+    display: none;
+    /* hide title on mobile */
+  }
+
+  .nav-brand {
+    padding-right: 12px;
+  }
+
+  .nav-item {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .nav-item.active::after {
+    width: 16px;
+  }
 }

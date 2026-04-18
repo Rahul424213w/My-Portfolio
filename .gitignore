@@ -1,0 +1,17 @@
+# IDE Settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+Thumbs.db
+.DS_Store
+
+# Node (if you ever use it)
+node_modules/
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
