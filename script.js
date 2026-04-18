@@ -2,30 +2,94 @@
 // CUSTOM CURSOR
 // =====================
 const cursor = document.getElementById('cursor');
-const trail = document.getElementById('cursorTrail');
 let mx = 0, my = 0;
 
 document.addEventListener('mousemove', (e) => {
   mx = e.clientX;
   my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
+  
+  // Update main cursor instantly
+  if (cursor) {
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  }
 });
 
-setInterval(() => {
-  trail.style.left = mx + 'px';
-  trail.style.top = my + 'px';
-}, 80);
 
-document.querySelectorAll('a, button, .skill-chip, .proj-card').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width = '20px';
-    cursor.style.height = '20px';
+// =====================
+// MAGNETIC TEXT (MORPHING CURSOR)
+// =====================
+document.querySelectorAll('.magnetic-text-container').forEach(container => {
+  const circle = container.querySelector('.magnetic-circle');
+  const innerContainer = container.querySelector('.inner-text-container');
+  const baseTextEl = container.querySelector('.base-text');
+  const innerTextEl = container.querySelector('.inner-text');
+  
+  const words = JSON.parse(container.getAttribute('data-words') || '[]');
+  let wordIndex = 0;
+  
+  if (words.length >= 2) {
+    baseTextEl.textContent = words[0];
+    innerTextEl.textContent = words[1];
+  }
+  
+  let currentX = 0, currentY = 0;
+  let targetX = 0, targetY = 0;
+  let animationFrame;
+  let transitionTimeout;
+  
+  const updateSize = () => {
+    innerContainer.style.width = container.offsetWidth + 'px';
+    innerContainer.style.height = container.offsetHeight + 'px';
+  };
+  
+  updateSize();
+  window.addEventListener('resize', updateSize);
+  
+  container.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    targetX = e.clientX - rect.left;
+    targetY = e.clientY - rect.top;
   });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width = '12px';
-    cursor.style.height = '12px';
+  
+  container.addEventListener('mouseenter', (e) => {
+    clearTimeout(transitionTimeout);
+    const rect = container.getBoundingClientRect();
+    targetX = currentX = e.clientX - rect.left;
+    targetY = currentY = e.clientY - rect.top;
+    
+    circle.style.width = '150px';
+    circle.style.height = '150px';
+    
+    cancelAnimationFrame(animationFrame);
+    animate();
   });
+  
+  container.addEventListener('mouseleave', () => {
+    circle.style.width = '0px';
+    circle.style.height = '0px';
+    cancelAnimationFrame(animationFrame);
+    
+    if (words.length > 0) {
+      transitionTimeout = setTimeout(() => {
+        wordIndex = (wordIndex + 1) % words.length;
+        const nextWordIndex = (wordIndex + 1) % words.length;
+        
+        baseTextEl.textContent = words[wordIndex];
+        innerTextEl.textContent = words[nextWordIndex];
+      }, 500);
+    }
+  });
+  
+  const animate = () => {
+    currentX += (targetX - currentX) * 0.15;
+    currentY += (targetY - currentY) * 0.15;
+    
+    circle.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+    innerContainer.style.transform = `translate(${-currentX}px, ${-currentY}px)`;
+    
+    animationFrame = requestAnimationFrame(animate);
+  };
 });
 
 
