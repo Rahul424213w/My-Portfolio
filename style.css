@@ -234,25 +234,27 @@ body::after {
 
 @media (max-width: 768px) {
   .floating-nav {
-    top: auto;
+    top: unset !important;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     padding: 12px 24px;
     background: rgba(19, 15, 39, 0.8);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     gap: 24px;
     width: max-content;
+    height: auto; /* Ensure height isn't forced */
   }
 
   .floating-nav.scrolled {
-    top: auto; /* Force override of desktop scrolled top */
+    top: unset !important;
     bottom: 20px; /* Slight shift on scroll for mobile too */
     padding: 10px 22px;
-    background: rgba(19, 15, 39, 0.9);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(19, 15, 39, 0.95);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   .nav-links {
