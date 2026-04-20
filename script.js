@@ -94,32 +94,8 @@ document.querySelectorAll('.magnetic-text-container').forEach(container => {
 
 
 // =====================
-// TYPING EFFECT
+// TYPING EFFECT (REMOVED)
 // =====================
-const roles = ["Web Developer 💻", "CSE Student 🎓", "Tech Enthusiast 🚀", "UI Craftsman ✨"];
-let roleIndex = 0, charIndex = 0, isDeleting = false;
-const typingEl = document.getElementById("typing");
-
-function typeEffect() {
-  const current = roles[roleIndex % roles.length];
-  if (!isDeleting && charIndex <= current.length) {
-    typingEl.textContent = current.substring(0, charIndex++);
-    setTimeout(typeEffect, 100);
-  } else if (isDeleting && charIndex >= 0) {
-    typingEl.textContent = current.substring(0, charIndex--);
-    setTimeout(typeEffect, 60);
-  } else {
-    if (!isDeleting) {
-      isDeleting = true;
-      setTimeout(typeEffect, 1200);
-    } else {
-      isDeleting = false;
-      roleIndex++;
-      setTimeout(typeEffect, 300);
-    }
-  }
-}
-typeEffect();
 
 
 // =====================
@@ -187,7 +163,9 @@ if (contactForm) {
 // =====================
 window.addEventListener('scroll', () => {
   const nav = document.querySelector('nav');
-  nav.style.borderBottomColor = window.scrollY > 50
-    ? 'rgba(200,255,0,0.2)'
-    : 'rgba(200,255,0,0.1)';
+  if (nav) {
+    nav.style.borderColor = window.scrollY > 50
+      ? 'rgba(200,255,0,0.3)'
+      : 'rgba(255,255,255,0.1)';
+  }
 });
