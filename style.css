@@ -157,7 +157,8 @@ body::after {
   align-items: center;
   gap: 40px;
   padding: 12px 30px;
-  background: rgba(19, 15, 39, 0.6); /* Matches --card */
+  background: rgba(19, 15, 39, 0.6);
+  /* Matches --card */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -225,9 +226,11 @@ body::after {
     padding: 12px 24px;
     gap: 24px;
   }
+
   .nav-links {
     gap: 16px;
   }
+
   .nav-links a {
     font-size: 0.7rem;
   }
@@ -334,6 +337,7 @@ body::after {
     right: 30px;
     bottom: 80px;
   }
+
   .profile-blob-crowd {
     width: 160px;
     height: 160px;
@@ -345,6 +349,7 @@ body::after {
     right: 20px;
     bottom: 360px;
   }
+
   .profile-blob-crowd {
     width: 120px;
     height: 120px;
@@ -368,7 +373,8 @@ body::after {
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  overflow: hidden;          /* clips the slide so it doesn't bleed outside */
+  overflow: hidden;
+  /* clips the slide so it doesn't bleed outside */
   animation: fadeSlideUp 0.5s ease 0.1s both;
 }
 
@@ -377,10 +383,10 @@ body::after {
   font-size: clamp(1.5rem, 3.5vw, 2rem);
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
   display: inline-block;
   /* Upward slide + fade — driven entirely by JS */
-  transition: transform 0.12s cubic-bezier(0.4,0,0.2,1), opacity 0.12s ease;
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.12s ease;
 }
 
 /* ── NAME ROW — independent, always static ─────────────────────────────────── */
@@ -471,13 +477,19 @@ body::after {
 }
 
 @keyframes nameShimmer {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
 }
 
 .hero-crowd-im {
   font-family: 'Space Mono', monospace;
-  font-size: 0.28em;   /* relative to the big h1 */
+  font-size: 0.28em;
+  /* relative to the big h1 */
   font-weight: 400;
   color: #fbbf24;
   vertical-align: middle;
@@ -485,7 +497,8 @@ body::after {
   letter-spacing: 3px;
   text-transform: lowercase;
   opacity: 0.85;
-  -webkit-text-fill-color: #fbbf24; /* override gradient from parent */
+  -webkit-text-fill-color: #fbbf24;
+  /* override gradient from parent */
 }
 
 /* Reposition the existing hero-content inside the crowd hero */
@@ -498,13 +511,16 @@ body::after {
 }
 
 /* Hide the hero-name h1 — replaced by hero-crowd-name-row */
-.hero-crowd .hero-name { display: none; }
+.hero-crowd .hero-name {
+  display: none;
+}
 
 /* Mobile tweaks */
 @media (max-width: 900px) {
   .hero-greeting-wrap {
     top: 100px;
   }
+
   .hero-crowd-name-row {
     top: 155px;
   }
@@ -518,6 +534,7 @@ body::after {
     font-weight: 800;
     letter-spacing: 2px;
   }
+
   .hero-content-crowd {
     bottom: 24px;
   }
@@ -657,9 +674,19 @@ body::after {
 
 @media (max-width: 768px) {
   .hero-socials-top-right {
-    top: 80px; /* Below the nav bar on mobile */
+    top: 24px;
     right: 24px;
-    gap: 12px;
+    gap: 8px;
+    flex-direction: row;
+  }
+  .hero-socials-top-right a {
+    padding: 8px;
+    font-size: 0;
+    gap: 0;
+  }
+  .hero-socials-top-right a svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -951,9 +978,8 @@ section {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 40px;
-  min-height: 400px;
+  align-items: center;
+  width: 100%;
   perspective: 800px;
 }
 
@@ -967,7 +993,13 @@ section {
   --playingcard-outline-color: #3d3759;
   --playingcard-hover-outline-color: #7c6ee6;
   --playingcard-canvas-bg: #23244a;
-  --playingcard-canvas-colors: 143,108,255;99,102,241;80,115,184;
+  --playingcard-canvas-colors: 143, 108, 255;
+  99,
+  102,
+  241;
+  80,
+  115,
+  184;
   --playingcard-inscription-color: #00a9fe;
   --playingcard-inscription-color-hover: #8F04A7;
 }
@@ -998,7 +1030,8 @@ section {
 }
 
 .playing-card.revealed .playing-card-inner {
-  background: #3a3a3a !important; /* Matches hover state of revealed card from React code */
+  background: #3a3a3a !important;
+  /* Matches hover state of revealed card from React code */
 }
 
 .playing-card-bg {
@@ -1078,7 +1111,8 @@ section {
 }
 
 .playing-card-text div {
-  margin-bottom: -2px; /* manual letter spacing */
+  margin-bottom: -2px;
+  /* manual letter spacing */
 }
 
 .playing-card-image {
@@ -1164,7 +1198,7 @@ section {
   align-items: stretch;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 768px) {
   .projects-grid {
     grid-template-columns: 1fr;
   }
