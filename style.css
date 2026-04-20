@@ -235,6 +235,269 @@ nav ul a:hover::after {
   }
 }
 
+/* ── CROWD HERO (first-screen) ─────────────────────────────────────────────── */
+.hero-crowd {
+  /* Deep dark-blue radial gradient matching the reference */
+  background: radial-gradient(125% 125% at 50% 90%, #000000 40%, #0d1a36 100%);
+  padding: 0;
+  display: block;
+  min-height: 100vh;
+}
+
+/* Crowd canvas fills 90% of the viewport height, pinned to the bottom */
+.crowd-canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Greeting + name overlay — sits at the top of the crowd hero */
+.hero-crowd-overlay {
+  position: absolute;
+  top: 140px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  padding-top: 20px;
+}
+
+/* Animated greeting row */
+.hero-greeting-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  overflow: visible;
+}
+
+.hero-greeting-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.hero-greeting-text {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 500;
+  font-family: 'Syne', sans-serif;
+  color: rgba(240, 236, 255, 0.85);
+  display: inline-block;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+
+/* ── PROFILE BLOB inside crowd hero ──────────────────────────────────────── */
+.hero-visual-crowd {
+  position: absolute;
+  right: 60px;
+  bottom: 270px;
+  z-index: 10;
+  animation: fadeSlideUp 0.8s ease 0.3s both;
+}
+
+/* Override the default profile-blob size inside the crowd hero */
+.profile-blob-crowd {
+  width: 200px;
+  height: 200px;
+}
+
+@media (max-width: 1100px) {
+  .hero-visual-crowd {
+    right: 30px;
+    bottom: 80px;
+  }
+  .profile-blob-crowd {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-visual-crowd {
+    right: 20px;
+    bottom: 360px;
+  }
+  .profile-blob-crowd {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-visual-crowd {
+    display: none;
+  }
+}
+
+/* ── GREETING — independent, never displaces the name ─────────────────────── */
+.hero-greeting-wrap {
+  position: absolute;
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;          /* clips the slide so it doesn't bleed outside */
+  animation: fadeSlideUp 0.5s ease 0.1s both;
+}
+
+.hero-greeting-text {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  display: inline-block;
+  /* Upward slide + fade — driven entirely by JS */
+  transition: transform 0.12s cubic-bezier(0.4,0,0.2,1), opacity 0.12s ease;
+}
+
+/* ── NAME ROW — independent, always static ─────────────────────────────────── */
+.hero-crowd-name-row {
+  position: absolute;
+  top: 190px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  z-index: 10;
+  animation: fadeSlideUp 0.6s ease 0.2s both;
+}
+
+
+/* Desktop: Inter — clean, minimalistic, geometric */
+.hero-crowd-name {
+  font-family: 'Inter', 'Syne', sans-serif;
+  font-size: clamp(2rem, 5.5vw, 6rem);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+  letter-spacing: -2px;
+  margin: 0;
+  text-align: center;
+}
+
+/* ── NAME HOVER ROLL EFFECT ─────────────────────────────────────────────── */
+.text-roll-container {
+  cursor: pointer;
+}
+
+.text-roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 0.95;
+  vertical-align: bottom;
+}
+
+.roll-char-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.roll-char-original,
+.roll-char-clone {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.roll-char-clone {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.text-roll-container:hover .roll-char-original,
+.text-roll-container:hover .roll-char-clone {
+  transform: translateY(-100%);
+}
+
+/* Ensure the gradient works on the rolling characters for the name */
+.hero-name-text .roll-char-original,
+.hero-name-text .roll-char-clone {
+  background: linear-gradient(135deg, #ffffff 0%, #c8ff00 40%, #00f5ff 70%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: nameShimmer 4s linear infinite;
+}
+
+.hero-name-text {
+  display: inline-block;
+}
+
+@keyframes nameShimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.hero-crowd-im {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.28em;   /* relative to the big h1 */
+  font-weight: 400;
+  color: #fbbf24;
+  vertical-align: middle;
+  margin-right: 8px;
+  letter-spacing: 3px;
+  text-transform: lowercase;
+  opacity: 0.85;
+  -webkit-text-fill-color: #fbbf24; /* override gradient from parent */
+}
+
+/* Reposition the existing hero-content inside the crowd hero */
+.hero-content-crowd {
+  position: absolute;
+  bottom: 60px;
+  left: 60px;
+  z-index: 10;
+  max-width: 480px;
+}
+
+/* Hide the hero-name h1 — replaced by hero-crowd-name-row */
+.hero-crowd .hero-name { display: none; }
+
+/* Mobile tweaks */
+@media (max-width: 900px) {
+  .hero-greeting-wrap {
+    top: 100px;
+  }
+  .hero-crowd-name-row {
+    top: 155px;
+  }
+}
+
+/* On small screens: Syne (Outfit still works but Syne is lighter) */
+@media (max-width: 480px) {
+  .hero-crowd-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 11vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  .hero-content-crowd {
+    bottom: 24px;
+  }
+}
+
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -374,61 +637,7 @@ nav ul a:hover::after {
   /* Increased gap to push the robot a fine little left */
 }
 
-.hero-robot {
-  position: relative;
-  width: 380px;
-  height: 380px;
-  mix-blend-mode: lighten;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 50%;
-}
 
-.globe-hint {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-  background: rgba(0, 0, 0, 0.4);
-  padding: 4px 10px;
-  border-radius: 20px;
-  backdrop-filter: blur(4px);
-  pointer-events: none;
-}
-
-/* Stunning circular neon blur that sits completely behind the robot */
-.hero-robot::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, var(--purple) 0%, var(--cyan) 100%);
-  filter: blur(55px);
-  opacity: 0.25;
-  border-radius: 50%;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.hero-robot:active {}
-
-.hero-robot:hover {
-  transform: translateY(-8px) scale(1.02);
-}
-
-/* Spline Canvas stays 100% full and completely unblurred/unmasked */
-.hero-robot spline-viewer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  outline: none;
-}
 
 @media (max-width: 768px) {
   .hero-visual {
@@ -1674,12 +1883,8 @@ footer {
   animation: dotPulse 2s ease-in-out infinite;
 }
 
-height: 2px;
-background-color: #fb923c;
-/* orange color from reference */
-transition: width 0.3s ease;
-border-radius: 2px;
-}
+
+
 
 .nav-item.active::after {
   width: 20px;

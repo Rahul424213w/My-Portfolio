@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RAK. — Rahul A K</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@400;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet">
+  <!-- Preload crowd sprite so it's ready the moment crowd.js runs -->
+  <link rel="preload" as="image" href="images/open-peeps-sheet.png">
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -32,16 +34,29 @@
   </nav>
 
   <!-- HERO -->
-  <header class="hero">
+  <header class="hero hero-crowd">
     <div class="hero-bg"></div>
     <div class="grid-lines"></div>
 
-    <div class="hero-content">
-      <div class="hero-tag">&#x2604; Available for work</div>
-      <h1 class="hero-name">
-        Rahul
-        <span class="highlight">A K</span>
+    <!-- GREETING — independent absolute position, never affects name layout -->
+    <div class="hero-greeting-wrap">
+      <span class="hero-greeting-text" id="hero-greeting">Hello</span>
+    </div>
+
+    <!-- NAME — independent absolute position, always static -->
+    <div class="hero-crowd-name-row text-roll-container">
+      <h1 class="hero-crowd-name">
+        <span class="hero-crowd-im text-roll" style="margin-right: 12px;">i'm</span>
+        <span class="hero-name-text text-roll">Rahul A K</span>
       </h1>
+    </div>
+
+    <!-- CROWD CANVAS -->
+    <canvas id="crowd-canvas" class="crowd-canvas"></canvas>
+
+    <!-- HERO CONTENT (bottom-left) -->
+    <div class="hero-content hero-content-crowd">
+      <div class="hero-tag">&#x2604; Available for work</div>
       <p class="hero-sub">// Building things for the web</p>
       <p><span id="typing"></span></p>
       <div class="hero-socials">
@@ -69,13 +84,9 @@
       </div>
     </div>
 
-    <div class="hero-visual">
-      <!-- GLOBE VISUAL -->
-      <div class="hero-robot globe-container">
-        <canvas id="globe-canvas" style="border-radius: 50%;"></canvas>
-      </div>
-
-      <div class="profile-blob">
+    <!-- PROFILE BLOB — bottom right -->
+    <div class="hero-visual hero-visual-crowd">
+      <div class="profile-blob profile-blob-crowd">
         <div class="blob-ring"></div>
         <div class="blob-ring"></div>
         <img src="images/profile.png" alt="Rahul A K">
@@ -366,9 +377,10 @@
   <!-- SplitType for Text Animation -->
   <script src="https://unpkg.com/split-type"></script>
 
-  <!-- D3.js and Custom Globe integration -->
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="globe.js"></script>
+
+
+  <!-- Crowd Canvas Walking Animation -->
+  <script src="crowd.js"></script>
 
   <!-- Custom Scripts -->
   <script src="script.js"></script>
