@@ -162,10 +162,12 @@ if (contactForm) {
 // NAV SCROLL EFFECT
 // =====================
 window.addEventListener('scroll', () => {
-  const nav = document.querySelector('nav');
+  const nav = document.querySelector('.floating-nav');
   if (nav) {
-    nav.style.borderColor = window.scrollY > 50
-      ? 'rgba(200,255,0,0.3)'
-      : 'rgba(255,255,255,0.1)';
+    if (window.scrollY > 100) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
   }
 });

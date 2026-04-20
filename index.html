@@ -145,27 +145,14 @@
         <div class="skill-chip"><span class="skill-icon">🧩</span><span>Problem Solving</span></div>
       </div>
 
-      <!-- Right side: Canvas Reveal Card -->
+      <!-- Right side: Interactive 3D Robot -->
       <div class="skills-animation">
-        <div class="playing-card" id="skills-card">
-          <div class="playing-card-inner">
-            <div class="playing-card-bg">
-              <canvas class="playing-card-canvas" id="skills-canvas"></canvas>
-              <!-- Mask for vignette effect -->
-              <div class="playing-card-mask"></div>
-            </div>
-            
-            <div class="playing-card-text top-left" id="skills-text-top">
-              <div>S</div><div>K</div><div>I</div><div>L</div><div>L</div><div>S</div>
-            </div>
-            
-            <div class="playing-card-text bottom-right" id="skills-text-bottom">
-              <div>S</div><div>K</div><div>I</div><div>L</div><div>L</div><div>S</div>
-            </div>
-            
-            <div class="playing-card-image">
-              <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=400&auto=format&fit=crop" alt="Code Skills Matrix" draggable="false" style="border-radius: 12px; border: 2px solid rgba(255,255,255,0.1);">
-            </div>
+        <div class="robot-container" id="whobee-robot">
+          <spline-viewer url="https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode"></spline-viewer>
+          <div class="robot-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="robot-icon" style="color: var(--acid); margin-bottom: 8px;"><path d="M12 8V4m0 0H8m4 0h4M6 11h12M6 11v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6M6 11H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m12 6h2a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 14h.01M15 14h.01"/></svg>
+            <h3>Whobee</h3>
+            <p>Interactive 3D Assistant</p>
           </div>
         </div>
       </div>
@@ -371,8 +358,10 @@
   <!-- Crowd Canvas Walking Animation -->
   <script src="crowd.js"></script>
 
+  <!-- Spline Viewer for 3D Robot -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.28/build/spline-viewer.js"></script>
+
   <!-- Custom Scripts -->
-  <script src="playing-card.js"></script>
   <script src="script.js"></script>
 </body>
 
