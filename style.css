@@ -990,6 +990,8 @@ section {
 @media (max-width: 768px) {
   .skills-layout {
     flex-direction: column;
+    gap: 40px;
+    align-items: center;
   }
 }
 
@@ -1002,14 +1004,47 @@ section {
   align-items: center;
   justify-content: center;
   flex: 1;
+  flex-shrink: 0;
+}
+
+/* orbit-system: the actual orbit content — scale this on mobile */
+.orbit-system {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
 }
 
 @media (max-width: 768px) {
   .orbiting-skills-container {
-    height: 400px;
-    transform: scale(0.8);
+    height: 320px;
+    max-width: 320px;
+    width: 320px;
+    overflow: hidden;
+    margin: 0 auto;
+    flex: none;
+  }
+
+  /* Scale the entire orbit system to ~65% — fits within the 320px clip box */
+  .orbit-system {
+    transform: scale(0.65);
   }
 }
+
+@media (max-width: 480px) {
+  .orbiting-skills-container {
+    height: 280px;
+    max-width: 280px;
+    width: 280px;
+  }
+
+  .orbit-system {
+    transform: scale(0.57);
+  }
+}
+
 
 /* Background pulse rings */
 .orbit-path {
@@ -1220,6 +1255,13 @@ section {
   perspective: 800px;
 }
 
+@media (max-width: 768px) {
+  .skills-animation {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
 
 /* ------------------------------------------- */
 /* INTERACTIVE 3D ROBOT STYLING                */
@@ -1268,17 +1310,29 @@ section {
 
 @media (max-width: 768px) {
   .robot-container {
+    width: 100%;
     max-width: 100%;
-    aspect-ratio: 4/5;
+    aspect-ratio: 1/1;
+    min-height: 280px;
   }
 
   .robot-label {
-    bottom: 20px;
-    left: 20px;
+    bottom: 16px;
+    left: 16px;
   }
 
   .robot-label h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+
+  .robot-label p {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .robot-container {
+    min-height: 240px;
   }
 }
 
@@ -1822,6 +1876,4 @@ footer {
   .nav-item.active::after {
     width: 16px;
   }
-}
-}
 }
