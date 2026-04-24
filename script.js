@@ -115,18 +115,18 @@ faders.forEach(f => observer.observe(f));
 // =====================
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
-  contactForm.addEventListener('submit', async function(e) {
+  contactForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     const btn = this.querySelector('.submit-btn');
     const originalText = btn.textContent;
-    
+
     // Loading state
     btn.textContent = 'Sending...';
     btn.style.opacity = '0.7';
     btn.disabled = true;
 
     const formData = new FormData(this);
-    
+
     try {
       const response = await fetch(this.action, {
         method: 'POST',
