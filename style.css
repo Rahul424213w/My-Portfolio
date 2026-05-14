@@ -10,6 +10,40 @@
   --muted: #8b7fa8;
 }
 
+/* Light Mode Variables */
+html.light-mode {
+  --acid: #0060FF;
+  --pink: #FF6D00;
+  --cyan: #00E5FF;
+  --purple: #0060FF;
+  --deep: #D9F2FA;
+  --surface: #E8F7FB;
+  --card: #F4FBFC;
+  --text: #050505;
+  /* Darkened for higher contrast */
+  --muted: #333333;
+  /* Darkened for better readability */
+}
+
+html.light-mode body::before {
+  opacity: 0.1;
+}
+
+html.light-mode body::after {
+  opacity: 0.2;
+}
+
+html.light-mode .floating-nav {
+  background: rgba(232, 247, 251, 0.8);
+  border-color: rgba(11, 42, 52, 0.1);
+  box-shadow: 0 4px 20px rgba(11, 42, 52, 0.1);
+}
+
+html.light-mode .floating-nav.scrolled {
+  background: rgba(232, 247, 251, 0.95);
+  box-shadow: 0 8px 32px rgba(11, 42, 52, 0.15);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -402,6 +436,51 @@ body::after {
   .nav-links a {
     font-size: 0.7rem;
   }
+}
+
+/* THEME TOGGLE BUTTON */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--acid);
+}
+
+html.light-mode .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sun-icon {
+  display: none;
+}
+
+.moon-icon {
+  display: block;
+}
+
+html.light-mode .sun-icon {
+  display: block;
+}
+
+html.light-mode .moon-icon {
+  display: none;
 }
 
 /* HERO */
@@ -2012,4 +2091,14 @@ footer {
   .nav-item.active::after {
     width: 16px;
   }
+}
+
+.nav-item {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+}
+
+.nav-item.active::after {
+  width: 16px;
+}
 }

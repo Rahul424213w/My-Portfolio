@@ -171,3 +171,26 @@ window.addEventListener('scroll', () => {
     }
   }
 });
+
+// =====================
+// THEME TOGGLE LOGIC
+// =====================
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+  // Check localStorage for saved theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.documentElement.classList.add('light-mode');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    document.documentElement.classList.toggle('light-mode');
+    
+    // Save preference
+    if (document.documentElement.classList.contains('light-mode')) {
+      localStorage.setItem('theme', 'light');
+    } else {
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+}
