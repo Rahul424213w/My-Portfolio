@@ -2598,11 +2598,20 @@ footer {
   .orbit-system {
     transform: scale(0.52); /* Shrink slightly more to avoid clipping */
   }
+}
 
-  /* Remove Profile Image from Mobile */
+/* HIGH-FIDELITY MOBILE REMOVALS (Tablet & Mobile) */
+@media (max-width: 991px) {
   .profile-img, 
-  .profile-blob {
+  .profile-blob,
+  .hero-visual-crowd {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
 
