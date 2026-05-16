@@ -62,7 +62,7 @@
   if (!canvas) return;
 
   const ctx    = canvas.getContext('2d');
-  const PEEP_SRC = 'images/open-peeps-sheet.png';
+  const PEEP_SRC = 'images/photo 1.png';
   const ROWS = 15;
   const COLS = 7;
 
