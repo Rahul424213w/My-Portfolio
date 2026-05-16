@@ -48,16 +48,12 @@
     };
 
     const cycleGreetings = () => {
-      if (idx >= greetings.length - 1) return; // stop at नमस्ते
-      idx++;
+      idx = (idx + 1) % greetings.length;
       animateGreeting(greetings[idx].text);
-
-      if (idx < greetings.length - 1) {
-        setTimeout(cycleGreetings, 550); // Snappy high-speed cycle
-      }
+      setTimeout(cycleGreetings, 800); // Consistent cycle speed
     };
 
-    setTimeout(cycleGreetings, 600);
+    setTimeout(cycleGreetings, 1000); // Wait for loader to fade before starting first cycle
   }
 
 
