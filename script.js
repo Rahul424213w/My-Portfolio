@@ -1,4 +1,83 @@
 // =====================
+// INTRO ANIMATION (GSAP)
+// =====================
+document.addEventListener("DOMContentLoaded", () => {
+  const introTL = gsap.timeline({ delay: 0.15 });
+  const shape   = document.getElementById("intro-shape");
+
+  // Step 1: Dot appears + "hey" fades up
+  introTL
+    .to(shape, { opacity: 1, duration: 0.35, ease: "power3.out" })
+    .to("#text-line-1", { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, "<0.05");
+
+  // Step 2: Morph to rectangle, corner accents appear, "I'm Rahul" fades up
+  introTL
+    .to("#text-line-1", { opacity: 0, y: -8, duration: 0.18, ease: "power2.in" }, "+=0.45")
+    .to(shape, {
+      width: 130,
+      height: 52,
+      borderRadius: 14,
+      duration: 0.45,
+      ease: "expo.out"
+    })
+    .to(".shape-red-piece",   { opacity: 1, duration: 0.22, ease: "power2.out" }, "-=0.25")
+    .to(".shape-green-piece", { opacity: 1, duration: 0.22, ease: "power2.out" }, "-=0.2")
+    .to("#text-line-2", { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, "-=0.15");
+
+  // Step 3: Morph to green sphere, text switches to subtitle
+  introTL
+    .to("#text-line-2",       { opacity: 0, y: -8, duration: 0.18, ease: "power2.in" }, "+=0.55")
+    .to(".shape-red-piece",   { opacity: 0, duration: 0.18 }, "<")
+    .to(".shape-green-piece", { opacity: 0, duration: 0.18 }, "<")
+    .to(shape, {
+      width: 130,
+      height: 130,
+      borderRadius: "50%",
+      duration: 0.55,
+      ease: "expo.inOut",
+      onStart: () => shape.classList.add("sphere")
+    })
+    .to(".smiley-face", { opacity: 1, duration: 0.4, ease: "power2.out" }, "-=0.15")
+    .to("#text-line-3", { opacity: 1, y: 0,  duration: 0.4, ease: "power3.out" }, "-=0.1");
+
+  // Step 4: Enter button slides up
+  introTL
+    .to("#enter-btn", {
+      opacity: 1,
+      y: 0,
+      duration: 0.4,
+      ease: "power3.out",
+      onComplete: () => {
+        document.getElementById("enter-btn").classList.add("active");
+      }
+    }, "+=0.15");
+
+  // Enter button click: fade out loader, play audio
+  document.getElementById("enter-btn").addEventListener("click", () => {
+    const loader = document.getElementById("initial-loader");
+    gsap.to(loader, {
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        loader.style.visibility = "hidden";
+        loader.style.display    = "none";
+        document.body.classList.remove("loading");
+      }
+    });
+
+    const heroAudio = document.getElementById("hero-audio");
+    if (heroAudio) {
+      heroAudio.muted = false;
+      window.isManuallyMuted = false;
+      heroAudio.play().catch(e => console.log("Audio play prevented:", e));
+      if (window.syncMuteState) window.syncMuteState(false);
+    }
+  });
+});
+
+
+// =====================
 // CUSTOM CURSOR
 // =====================
 const cursor = document.getElementById('cursor');
@@ -8,11 +87,16 @@ document.addEventListener('mousemove', (e) => {
   mx = e.clientX;
   my = e.clientY;
 
-  // Update main cursor instantly
   if (cursor) {
     cursor.style.left = mx + 'px';
     cursor.style.top = my + 'px';
   }
+});
+
+// Cursor hover effect
+document.querySelectorAll('a, button, .proj-card, .magnetic-text-container').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
 });
 
 
@@ -185,7 +269,7 @@ if (themeToggle) {
 
   themeToggle.addEventListener('click', () => {
     document.documentElement.classList.toggle('light-mode');
-    
+
     // Save preference
     if (document.documentElement.classList.contains('light-mode')) {
       localStorage.setItem('theme', 'light');
@@ -193,4 +277,180 @@ if (themeToggle) {
       localStorage.setItem('theme', 'dark');
     }
   });
+}
+
+// =====================
+// GLOBAL AUDIO CONTROL
+// =====================
+const heroAudio = document.getElementById('hero-audio');
+const cinematicAudio = document.getElementById('cinematic-audio');
+const muteBtnFloat = document.getElementById('mute-btn-float');
+
+if (muteBtnFloat) {
+  const iconUnmuted = muteBtnFloat.querySelector('.icon-unmuted');
+  const iconMuted = muteBtnFloat.querySelector('.icon-muted');
+  window.isManuallyMuted = false;
+
+  const updateMuteIcons = (isMuted) => {
+    if (isMuted) {
+      iconUnmuted.style.display = 'none';
+      iconMuted.style.display = 'block';
+      muteBtnFloat.classList.remove('playing');
+    } else {
+      iconUnmuted.style.display = 'block';
+      iconMuted.style.display = 'none';
+      muteBtnFloat.classList.add('playing');
+    }
+  };
+
+  window.syncMuteState = (isMuted) => {
+    if (heroAudio) heroAudio.muted = isMuted;
+    if (cinematicAudio) cinematicAudio.muted = isMuted;
+    window.isManuallyMuted = isMuted;
+    updateMuteIcons(isMuted);
+  };
+
+  muteBtnFloat.addEventListener('click', () => {
+    const newState = !window.isManuallyMuted;
+    syncMuteState(newState);
+
+    if (!newState) {
+      // If unmuting, try to play current audio
+      if (heroAudio && heroAudio.paused && !heroAudio.dataset.outOfView) {
+        heroAudio.play().catch(() => { });
+      } else if (cinematicAudio && cinematicAudio.paused && cinematicAudio.dataset.inView === 'true') {
+        cinematicAudio.play().catch(() => { });
+      }
+    }
+  });
+
+  // Autoplay management
+  const attemptAutoplay = () => {
+    if (window.isManuallyMuted) return;
+    if (heroAudio) {
+      heroAudio.play().then(() => {
+        updateMuteIcons(false);
+      }).catch(() => {
+        // Wait for first interaction
+        const startAudio = () => {
+          if (!window.isManuallyMuted) {
+            heroAudio.play().then(() => {
+              updateMuteIcons(false);
+              window.removeEventListener('click', startAudio);
+              window.removeEventListener('scroll', startAudio);
+            }).catch(() => { });
+          }
+        };
+        window.addEventListener('click', startAudio);
+        window.addEventListener('scroll', startAudio, { passive: true });
+      });
+    }
+  };
+
+  attemptAutoplay();
+
+  // Audio Transitions
+  const heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    const audioObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (heroAudio && !window.isManuallyMuted) heroAudio.play().catch(() => { });
+          if (cinematicAudio) cinematicAudio.pause();
+          if (heroAudio) delete heroAudio.dataset.outOfView;
+        } else {
+          if (heroAudio) {
+            heroAudio.pause();
+            heroAudio.dataset.outOfView = 'true';
+          }
+          if (cinematicAudio && entry.boundingClientRect.top < 0) {
+            cinematicAudio.dataset.inView = 'true';
+            if (!window.isManuallyMuted) {
+              cinematicAudio.muted = false;
+              cinematicAudio.play().catch(() => { });
+            }
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+    audioObserver.observe(heroSection);
+  }
+}
+
+// =====================
+// CINEMATIC PARALLAX MULTI-SECTION
+// =====================
+const cinematicSections = document.querySelectorAll(".cinematic-section");
+if (cinematicSections.length > 0) {
+  const cinematicObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -10% 0px" });
+
+  cinematicSections.forEach(section => {
+    const layers = section.querySelectorAll(".parallax-layer");
+    layers.forEach(layer => {
+      const delay = layer.dataset.delay || 0;
+      const inner = layer.querySelector(".parallax-layer-inner");
+      if (inner) inner.style.transitionDelay = `${delay}s`;
+      cinematicObserver.observe(layer);
+    });
+  });
+
+  const updateAllParallax = () => {
+    const windowHeight = window.innerHeight;
+
+    cinematicSections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const textInner = section.querySelector(".cinematic-text-inner");
+      const layers = section.querySelectorAll(".parallax-layer");
+
+      if (rect.top <= windowHeight && rect.bottom >= 0) {
+        // Calculate progress within THIS section
+        const totalScroll = windowHeight + rect.height;
+        const currentScroll = windowHeight - rect.top;
+        let progress = currentScroll / totalScroll;
+        progress = Math.max(0, Math.min(1, progress));
+
+        // Text Parallax & Opacity (Reference Mapping: [0, 0.4, 0.9, 1])
+        if (textInner) {
+          // Precise movement: targeting -80% transform
+          const textY = progress * -80;
+          textInner.style.transform = `translateY(${textY}%)`;
+
+          // Refined Opacity curve based on reference
+          let opacity = 1;
+          if (progress < 0.4) {
+            opacity = progress / 0.4;
+          } else if (progress > 0.9) {
+            opacity = 1 - (progress - 0.9) / 0.1;
+          }
+          textInner.style.opacity = opacity;
+        }
+
+        // Layer Parallax
+        layers.forEach(layer => {
+          const speed = parseFloat(layer.dataset.speed) || 0;
+          const yOffset = progress * speed;
+          layer.style.transform = `translateY(${yOffset}%)`;
+        });
+      }
+    });
+  };
+
+  let parallaxTicking = false;
+  window.addEventListener("scroll", () => {
+    if (!parallaxTicking) {
+      window.requestAnimationFrame(() => {
+        updateAllParallax();
+        parallaxTicking = false;
+      });
+      parallaxTicking = true;
+    }
+  }, { passive: true });
+
+  updateAllParallax();
 }
