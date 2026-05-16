@@ -2396,7 +2396,8 @@ footer {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
 }
 
-.parallax-layer img {
+.parallax-layer img,
+.parallax-layer video {
   position: absolute;
   inset: 0;
   width: 100%;

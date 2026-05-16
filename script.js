@@ -454,3 +454,43 @@ if (cinematicSections.length > 0) {
 
   updateAllParallax();
 }
+
+// =====================
+// MEDIA TAG AUTO-SWITCHER
+// =====================
+// Automatically detects if an img has a video source or if a video has an image source
+// and replaces the HTML tag appropriately. This allows changing media types just by changing the src.
+document.addEventListener("DOMContentLoaded", () => {
+  const mediaElements = document.querySelectorAll(".parallax-layer-inner img, .parallax-layer-inner video");
+  
+  mediaElements.forEach(el => {
+    const src = el.getAttribute("src");
+    if (!src) return;
+    
+    const isVideoSrc = src.match(/\.(mp4|webm|ogg)$/i);
+    const isImageSrc = src.match(/\.(jpeg|jpg|png|gif|webp)$/i);
+    const isImgTag = el.tagName.toLowerCase() === "img";
+    const isVideoTag = el.tagName.toLowerCase() === "video";
+    
+    if (isImgTag && isVideoSrc) {
+      // It's an img tag but has a video source, convert to video
+      const video = document.createElement("video");
+      video.src = src;
+      video.autoplay = true;
+      video.loop = true;
+      video.muted = true;
+      video.setAttribute("playsinline", "");
+      // copy classes or data attributes if needed
+      if (el.className) video.className = el.className;
+      el.replaceWith(video);
+    } else if (isVideoTag && isImageSrc) {
+      // It's a video tag but has an image source, convert to img
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
+      img.loading = "lazy";
+      if (el.className) img.className = el.className;
+      el.replaceWith(img);
+    }
+  });
+});
