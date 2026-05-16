@@ -2598,6 +2598,12 @@ footer {
   .orbit-system {
     transform: scale(0.52); /* Shrink slightly more to avoid clipping */
   }
+
+  /* Remove Profile Image from Mobile */
+  .profile-img, 
+  .profile-blob {
+    display: none !important;
+  }
 }
 
 /* Fix for landscape mobile or height-constrained devices */
