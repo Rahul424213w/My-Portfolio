@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (heroAudio) {
       heroAudio.muted = false;
       window.isManuallyMuted = false;
+      window.userHasEntered = true;
       heroAudio.play().catch(e => console.log("Audio play prevented:", e));
       if (window.syncMuteState) window.syncMuteState(false);
     }
@@ -286,6 +287,8 @@ const heroAudio = document.getElementById('hero-audio');
 const cinematicAudio = document.getElementById('cinematic-audio');
 const muteBtnFloat = document.getElementById('mute-btn-float');
 
+window.userHasEntered = false;
+
 if (muteBtnFloat) {
   const iconUnmuted = muteBtnFloat.querySelector('.icon-unmuted');
   const iconMuted = muteBtnFloat.querySelector('.icon-muted');
@@ -315,7 +318,6 @@ if (muteBtnFloat) {
     syncMuteState(newState);
 
     if (!newState) {
-      // If unmuting, try to play current audio
       if (heroAudio && heroAudio.paused && !heroAudio.dataset.outOfView) {
         heroAudio.play().catch(() => { });
       } else if (cinematicAudio && cinematicAudio.paused && cinematicAudio.dataset.inView === 'true') {
@@ -324,38 +326,13 @@ if (muteBtnFloat) {
     }
   });
 
-  // Autoplay management
-  const attemptAutoplay = () => {
-    if (window.isManuallyMuted) return;
-    if (heroAudio) {
-      heroAudio.play().then(() => {
-        updateMuteIcons(false);
-      }).catch(() => {
-        // Wait for first interaction
-        const startAudio = () => {
-          if (!window.isManuallyMuted) {
-            heroAudio.play().then(() => {
-              updateMuteIcons(false);
-              window.removeEventListener('click', startAudio);
-              window.removeEventListener('scroll', startAudio);
-            }).catch(() => { });
-          }
-        };
-        window.addEventListener('click', startAudio);
-        window.addEventListener('scroll', startAudio, { passive: true });
-      });
-    }
-  };
-
-  attemptAutoplay();
-
   // Audio Transitions
   const heroSection = document.querySelector('.hero');
   if (heroSection) {
     const audioObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          if (heroAudio && !window.isManuallyMuted) heroAudio.play().catch(() => { });
+          if (heroAudio && !window.isManuallyMuted && window.userHasEntered) heroAudio.play().catch(() => { });
           if (cinematicAudio) cinematicAudio.pause();
           if (heroAudio) delete heroAudio.dataset.outOfView;
         } else {
@@ -365,7 +342,7 @@ if (muteBtnFloat) {
           }
           if (cinematicAudio && entry.boundingClientRect.top < 0) {
             cinematicAudio.dataset.inView = 'true';
-            if (!window.isManuallyMuted) {
+            if (!window.isManuallyMuted && window.userHasEntered) {
               cinematicAudio.muted = false;
               cinematicAudio.play().catch(() => { });
             }
