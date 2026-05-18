@@ -12,6 +12,9 @@ Thumbs.db
 node_modules/
 npm-debug.log*
 
+# Firebase Local Cache
+.firebase/
+
 # Build artifacts
 dist/
 build/
