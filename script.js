@@ -402,6 +402,8 @@ if (cinematicSections.length > 0) {
 
   const updateAllParallax = () => {
     const windowHeight = window.innerHeight;
+    const isMobile = window.innerWidth <= 768;
+    const mobileDampener = isMobile ? 0.4 : 1;
 
     cinematicSections.forEach(section => {
       const rect = section.getBoundingClientRect();
@@ -409,19 +411,15 @@ if (cinematicSections.length > 0) {
       const layers = section.querySelectorAll(".parallax-layer");
 
       if (rect.top <= windowHeight && rect.bottom >= 0) {
-        // Calculate progress within THIS section
         const totalScroll = windowHeight + rect.height;
         const currentScroll = windowHeight - rect.top;
         let progress = currentScroll / totalScroll;
         progress = Math.max(0, Math.min(1, progress));
 
-        // Text Parallax & Opacity (Reference Mapping: [0, 0.4, 0.9, 1])
         if (textInner) {
-          // Precise movement: targeting -80% transform
-          const textY = progress * -80;
+          const textY = isMobile ? progress * -40 : progress * -80;
           textInner.style.transform = `translateY(${textY}%)`;
 
-          // Refined Opacity curve based on reference
           let opacity = 1;
           if (progress < 0.4) {
             opacity = progress / 0.4;
@@ -431,10 +429,9 @@ if (cinematicSections.length > 0) {
           textInner.style.opacity = opacity;
         }
 
-        // Layer Parallax
         layers.forEach(layer => {
           const speed = parseFloat(layer.dataset.speed) || 0;
-          const yOffset = progress * speed;
+          const yOffset = progress * speed * mobileDampener;
           layer.style.transform = `translateY(${yOffset}%)`;
         });
       }
@@ -473,18 +470,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const isVideoTag = el.tagName.toLowerCase() === "video";
     
     if (isImgTag && isVideoSrc) {
-      // It's an img tag but has a video source, convert to video
       const video = document.createElement("video");
       video.src = src;
       video.autoplay = true;
       video.loop = true;
       video.muted = true;
       video.setAttribute("playsinline", "");
-      // copy classes or data attributes if needed
       if (el.className) video.className = el.className;
       el.replaceWith(video);
     } else if (isVideoTag && isImageSrc) {
-      // It's a video tag but has an image source, convert to img
       const img = document.createElement("img");
       img.src = src;
       img.alt = "";
@@ -492,5 +486,31 @@ document.addEventListener("DOMContentLoaded", () => {
       if (el.className) img.className = el.className;
       el.replaceWith(img);
     }
+  });
+});
+
+// =====================
+// MOBILE VIDEO OPTIMIZATION
+// =====================
+// Pauses videos when not visible on mobile to save battery and data
+document.addEventListener("DOMContentLoaded", () => {
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) return;
+  
+  const videos = document.querySelectorAll(".parallax-layer video");
+  if (videos.length === 0) return;
+  
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.play().catch(() => {});
+      } else {
+        entry.target.pause();
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  videos.forEach(video => {
+    videoObserver.observe(video);
   });
 });
