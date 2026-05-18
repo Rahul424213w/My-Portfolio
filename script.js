@@ -294,6 +294,8 @@ if (muteBtnFloat) {
   const iconMuted = muteBtnFloat.querySelector('.icon-muted');
   window.isManuallyMuted = false;
 
+  if (cinematicAudio) cinematicAudio.volume = 0.3;
+
   const updateMuteIcons = (isMuted) => {
     if (isMuted) {
       iconUnmuted.style.display = 'none';
@@ -321,6 +323,7 @@ if (muteBtnFloat) {
       if (heroAudio && heroAudio.paused && !heroAudio.dataset.outOfView) {
         heroAudio.play().catch(() => { });
       } else if (cinematicAudio && cinematicAudio.paused && cinematicAudio.dataset.inView === 'true') {
+        cinematicAudio.volume = 0.3;
         cinematicAudio.play().catch(() => { });
       }
     }
@@ -344,6 +347,7 @@ if (muteBtnFloat) {
             cinematicAudio.dataset.inView = 'true';
             if (!window.isManuallyMuted && window.userHasEntered) {
               cinematicAudio.muted = false;
+              cinematicAudio.volume = 0.3;
               cinematicAudio.play().catch(() => { });
             }
           }
