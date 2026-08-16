@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const heroAudio = document.getElementById("hero-audio");
     if (heroAudio) {
+      heroAudio.volume = 0.05;
       heroAudio.muted = false;
       window.isManuallyMuted = false;
       window.userHasEntered = true;
@@ -287,14 +288,16 @@ const heroAudio = document.getElementById('hero-audio');
 const cinematicAudio = document.getElementById('cinematic-audio');
 const muteBtnFloat = document.getElementById('mute-btn-float');
 
+// Set volumes to 5% immediately on load
+if (heroAudio) heroAudio.volume = 0.05;
+if (cinematicAudio) cinematicAudio.volume = 0.05;
+
 window.userHasEntered = false;
 
 if (muteBtnFloat) {
   const iconUnmuted = muteBtnFloat.querySelector('.icon-unmuted');
   const iconMuted = muteBtnFloat.querySelector('.icon-muted');
   window.isManuallyMuted = false;
-
-  if (cinematicAudio) cinematicAudio.volume = 0.3;
 
   const updateMuteIcons = (isMuted) => {
     if (isMuted) {
@@ -309,8 +312,15 @@ if (muteBtnFloat) {
   };
 
   window.syncMuteState = (isMuted) => {
-    if (heroAudio) heroAudio.muted = isMuted;
-    if (cinematicAudio) cinematicAudio.muted = isMuted;
+    if (heroAudio) {
+      heroAudio.muted = isMuted;
+      // Always keep volume at 5% — never increase beyond this
+      if (!isMuted) heroAudio.volume = 0.05;
+    }
+    if (cinematicAudio) {
+      cinematicAudio.muted = isMuted;
+      if (!isMuted) cinematicAudio.volume = 0.05;
+    }
     window.isManuallyMuted = isMuted;
     updateMuteIcons(isMuted);
   };
@@ -321,9 +331,10 @@ if (muteBtnFloat) {
 
     if (!newState) {
       if (heroAudio && heroAudio.paused && !heroAudio.dataset.outOfView) {
+        heroAudio.volume = 0.05;
         heroAudio.play().catch(() => { });
       } else if (cinematicAudio && cinematicAudio.paused && cinematicAudio.dataset.inView === 'true') {
-        cinematicAudio.volume = 0.3;
+        cinematicAudio.volume = 0.05;
         cinematicAudio.play().catch(() => { });
       }
     }
@@ -335,7 +346,10 @@ if (muteBtnFloat) {
     const audioObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          if (heroAudio && !window.isManuallyMuted && window.userHasEntered) heroAudio.play().catch(() => { });
+          if (heroAudio && !window.isManuallyMuted && window.userHasEntered) {
+            heroAudio.volume = 0.05;
+            heroAudio.play().catch(() => { });
+          }
           if (cinematicAudio) cinematicAudio.pause();
           if (heroAudio) delete heroAudio.dataset.outOfView;
         } else {
@@ -347,7 +361,7 @@ if (muteBtnFloat) {
             cinematicAudio.dataset.inView = 'true';
             if (!window.isManuallyMuted && window.userHasEntered) {
               cinematicAudio.muted = false;
-              cinematicAudio.volume = 0.3;
+              cinematicAudio.volume = 0.05;
               cinematicAudio.play().catch(() => { });
             }
           }
@@ -398,8 +412,13 @@ if (cinematicSections.length > 0) {
         progress = Math.max(0, Math.min(1, progress));
 
         if (textInner) {
-          const textY = isMobile ? progress * -40 : progress * -80;
-          textInner.style.transform = `translateY(${textY}%)`;
+          if (isMobile) {
+            // Static collage on mobile — keep the text pinned, no parallax drift
+            textInner.style.transform = "none";
+          } else {
+            const textY = progress * -80;
+            textInner.style.transform = `translateY(${textY}%)`;
+          }
 
           let opacity = 1;
           if (progress < 0.4) {
@@ -411,6 +430,8 @@ if (cinematicSections.length > 0) {
         }
 
         layers.forEach(layer => {
+          // Keep the picture collage static on mobile — no parallax movement
+          if (isMobile) return;
           const speed = parseFloat(layer.dataset.speed) || 0;
           const yOffset = progress * speed * mobileDampener;
           layer.style.transform = `translateY(${yOffset}%)`;

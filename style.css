@@ -995,6 +995,11 @@ html.light-mode .mute-btn:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 
+/* Hide the in-hero mute-btn — the floating mute-btn-float handles all audio */
+.hero .mute-btn {
+  display: none !important;
+}
+
 /* FLOATING GRID */
 .grid-lines {
   position: absolute;
@@ -2432,8 +2437,11 @@ footer {
 
 @media (max-width: 768px) {
   .cinematic-section {
-    height: 180vh;
-    overflow: visible;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .cinematic-text-container {
+    position: static;
   }
   .cinematic-subtitle {
     letter-spacing: 0.25em;
@@ -2448,7 +2456,7 @@ footer {
 
 @media (max-width: 480px) {
   .cinematic-section {
-    height: 200vh;
+    height: 100vh;
   }
   .cinematic-text-inner {
     padding: 0 1.2rem;
@@ -2504,9 +2512,10 @@ footer {
 
 @media (max-width: 768px) {
   .glass-strong {
-    backdrop-filter: blur(10px) saturate(140%) !important;
-    -webkit-backdrop-filter: blur(10px) saturate(140%) !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    /* Reduce backdrop-filter intensity on mobile for better performance */
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
   }
 }
 
@@ -2533,6 +2542,17 @@ footer {
   .layer-overlay {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.15));
   }
+}
+
+/* Ensure parallax images always fill their container properly */
+.parallax-layer-inner img,
+.parallax-layer-inner video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Layer Positions & Dimensions */
@@ -2807,16 +2827,17 @@ footer {
 
 /* HIGH-FIDELITY MOBILE REMOVALS (Tablet & Mobile) */
 @media (max-width: 991px) {
-  .profile-img, 
-  .profile-blob,
+  /* Only hide profile-img in intro loader on small tablets.
+     Keep hero-visual-crowd visible — it's the profile section in crowd hero */
+  .initial-loader .profile-img {
+    display: none !important;
+  }
+}
+
+/* Hide profile blob in the hero only on very small phones where it crowds content */
+@media (max-width: 480px) {
   .hero-visual-crowd {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 }
 
@@ -2828,5 +2849,71 @@ footer {
   .hero-crowd-name-row {
     top: 50%;
     transform: translateY(-50%);
+  }
+}
+
+/* =========================================
+   MOBILE PERFORMANCE & SCROLL OPTIMIZATION
+   ========================================= */
+@media (max-width: 768px) {
+  /* Smooth momentum scrolling on iOS */
+  html, body {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Optimize parallax layers for GPU compositing */
+  .parallax-layer {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Ensure images in parallax layers are always fully visible */
+  .parallax-layer-inner {
+    overflow: hidden;
+  }
+
+  .parallax-layer-inner img {
+    will-change: auto;
+    /* Disable image drag on mobile */
+    -webkit-user-drag: none;
+    user-select: none;
+    display: block;
+  }
+
+  /* Cinematic section: reduce height for better mobile experience */
+  .cinematic-section {
+    /* Use vh + px to ensure enough scroll room */
+    min-height: 100vh;
+  }
+
+  /* Floating mute button: always accessible above bottom nav */
+  .mute-btn-float {
+    /* ensure above mobile nav bar which sits at bottom 24px */
+    bottom: 96px;
+    right: 16px;
+  }
+
+  /* Projects marquee: ensure cards are touchable */
+  .projects-marquee-track {
+    touch-action: pan-y;
+  }
+
+  /* Ensure section headings don't overflow */
+  .section-label h2 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
+
+/* Respect prefers-reduced-motion: disable parallax animations */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-layer {
+    transform: none !important;
+  }
+  .projects-marquee-track {
+    animation-play-state: paused;
+  }
+  .marquee-inner {
+    animation-play-state: paused;
   }
 }
