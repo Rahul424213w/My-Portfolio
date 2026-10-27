@@ -1,11 +1,10 @@
 {
   "hosting": {
-    "public": ".",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**",
-      ".vscode/**"
+      "**/node_modules/**"
     ],
     "rewrites": [
       {
@@ -15,7 +14,7 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(js|css|png|jpg|jpeg|gif|svg|ico|mp3|mp4|webm|ogg|webp|ico)",
+        "source": "**/*.@(js|css|png|jpg|jpeg|gif|svg|ico|mp3|mp4|webm|ogg|webp)",
         "headers": [
           {
             "key": "Cache-Control",
