@@ -1345,6 +1345,7 @@ footer {
   scroll-snap-align: start;
 }
 
+/* ── Desktop: sticky centred text ───────────────────────────────────────────── */
 .cinematic-text-container {
   position: sticky;
   top: 0;
@@ -1379,42 +1380,6 @@ footer {
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .cinematic-section {
-    height: 100vh;
-    overflow: hidden;
-  }
-  .cinematic-text-container {
-    position: static;
-  }
-  .cinematic-subtitle {
-    letter-spacing: 0.25em;
-    font-size: 0.7rem;
-    opacity: 0.8;
-  }
-  .cinematic-title {
-    font-size: clamp(2.2rem, 10vw, 3.5rem);
-    line-height: 1.05;
-  }
-}
-
-@media (max-width: 480px) {
-  .cinematic-section {
-    height: 100vh;
-  }
-  .cinematic-text-inner {
-    padding: 0 1.2rem;
-  }
-  .cinematic-subtitle {
-    font-size: 0.65rem;
-    margin-bottom: 0.75rem;
-  }
-  .cinematic-title {
-    font-size: 2rem;
-    letter-spacing: -0.03em;
-  }
-}
-
 .cinematic-title .block {
   display: block;
 }
@@ -1427,6 +1392,18 @@ footer {
   color: transparent;
 }
 
+/* ── Desktop: absolute parallax canvas ─────────────────────────────────────── */
+.cinematic-layers-desktop {
+  position: absolute;
+  inset: 0;
+}
+
+/* Mobile grid is hidden on desktop */
+.cinematic-grid-mobile {
+  display: none;
+}
+
+/* ── Parallax layer base ────────────────────────────────────────────────────── */
 .parallax-layer {
   position: absolute;
   border-radius: 1.5rem;
@@ -1438,29 +1415,11 @@ footer {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 768px) {
-  .parallax-layer {
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 1rem;
-  }
-}
-
 .glass-strong {
   background: rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(16px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(160%) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-@media (max-width: 768px) {
-  .glass-strong {
-    /* Reduce backdrop-filter intensity on mobile for better performance */
-    backdrop-filter: blur(6px) !important;
-    -webkit-backdrop-filter: blur(6px) !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-  }
 }
 
 .shadow-2xl {
@@ -1476,19 +1435,6 @@ footer {
   object-fit: cover;
 }
 
-.layer-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
-}
-
-@media (max-width: 768px) {
-  .layer-overlay {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.15));
-  }
-}
-
-/* Ensure parallax images always fill their container properly */
 .parallax-layer-inner img,
 .parallax-layer-inner video {
   position: absolute;
@@ -1499,189 +1445,30 @@ footer {
   object-position: center;
 }
 
-/* Layer Positions & Dimensions */
-.layer-1 {
-  left: 5%;
-  top: 10%;
-  width: 28%;
-  aspect-ratio: 4/5;
+.layer-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
 }
 
-.layer-2 {
-  right: 8%;
-  top: 6%;
-  width: 26%;
-  aspect-ratio: 3/4;
-}
+/* ── Desktop layer positions ────────────────────────────────────────────────── */
+.layer-1 { left: 5%;  top: 10%;    width: 28%; aspect-ratio: 4/5; }
+.layer-2 { right: 8%; top: 6%;     width: 26%; aspect-ratio: 3/4; }
+.layer-3 { left: 18%; bottom: 8%;  width: 24%; aspect-ratio: 16/10; }
+.layer-4 { right: 12%;bottom: 12%; width: 30%; aspect-ratio: 16/10; }
+.layer-5 { left: 42%; top: 28%;    width: 20%; aspect-ratio: 3/4; }
+.layer-6 { right: 35%;top: 15%;    width: 18%; aspect-ratio: 4/5; }
+.layer-7 { left: 12%; top: 45%;    width: 22%; aspect-ratio: 1/1; }
+.layer-8 { right: 5%; top: 40%;    width: 25%; aspect-ratio: 16/10; }
 
-.layer-3 {
-  left: 18%;
-  bottom: 8%;
-  width: 24%;
-  aspect-ratio: 16/10;
-}
-
-.layer-4 {
-  right: 12%;
-  bottom: 12%;
-  width: 30%;
-  aspect-ratio: 16/10;
-}
-
-.layer-5 {
-  left: 42%;
-  top: 28%;
-  width: 20%;
-  aspect-ratio: 3/4;
-}
-
-.layer-6 {
-  right: 35%;
-  top: 15%;
-  width: 18%;
-  aspect-ratio: 4/5;
-}
-
-.layer-7 {
-  left: 12%;
-  top: 45%;
-  width: 22%;
-  aspect-ratio: 1/1;
-}
-
-.layer-8 {
-  right: 5%;
-  top: 40%;
-  width: 25%;
-  aspect-ratio: 16/10;
-}
-
-/* Small screen adjustments for parallax layers */
-@media (max-width: 768px) {
-  .layer-1 {
-    left: 5%;
-    top: 8%;
-    width: 38%;
-    aspect-ratio: 3/4;
-    border-radius: 1rem;
-  }
-
-  .layer-2 {
-    right: 5%;
-    top: 12%;
-    width: 42%;
-    aspect-ratio: 3/4;
-    border-radius: 1rem;
-  }
-
-  .layer-3 {
-    left: 8%;
-    bottom: 20%;
-    width: 40%;
-    aspect-ratio: 4/3;
-    border-radius: 1rem;
-  }
-
-  .layer-4 {
-    right: 8%;
-    bottom: 10%;
-    width: 45%;
-    aspect-ratio: 4/3;
-    border-radius: 1rem;
-  }
-
-  .layer-5 {
-    left: 50%;
-    top: 35%;
-    transform: translateX(-50%);
-    width: 55%;
-    aspect-ratio: 16/9;
-    border-radius: 1rem;
-    z-index: 2;
-  }
-
-  .layer-6 {
-    right: 15%;
-    top: 22%;
-    width: 35%;
-    aspect-ratio: 3/4;
-    border-radius: 1rem;
-  }
-
-  .layer-7 {
-    left: 10%;
-    top: 55%;
-    width: 35%;
-    aspect-ratio: 1/1;
-    border-radius: 1rem;
-  }
-
-  .layer-8 {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .layer-1 {
-    left: 3%;
-    top: 5%;
-    width: 45%;
-    border-radius: 0.75rem;
-  }
-
-  .layer-2 {
-    right: 3%;
-    top: 8%;
-    width: 48%;
-    border-radius: 0.75rem;
-  }
-
-  .layer-3 {
-    left: 5%;
-    bottom: 25%;
-    width: 45%;
-    aspect-ratio: 1/1;
-    border-radius: 0.75rem;
-  }
-
-  .layer-4 {
-    right: 5%;
-    bottom: 8%;
-    width: 50%;
-    aspect-ratio: 1/1;
-    border-radius: 0.75rem;
-  }
-
-  .layer-5 {
-    left: 50%;
-    top: 38%;
-    width: 60%;
-    border-radius: 0.75rem;
-  }
-
-  .layer-6 {
-    right: 10%;
-    top: 18%;
-    width: 40%;
-    border-radius: 0.75rem;
-  }
-
-  .layer-7 {
-    left: 5%;
-    top: 58%;
-    width: 40%;
-    border-radius: 0.75rem;
-  }
-}
-
-
+/* ── Parallax layer inner ───────────────────────────────────────────────────── */
 .parallax-layer-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .parallax-layer.is-visible .parallax-layer-inner {
@@ -1690,112 +1477,141 @@ footer {
 }
 
 /* =========================================
-   COMPREHENSIVE MOBILE REFINEMENTS
-   ========================================= */
-@media (max-width: 480px) {
-  /* Hero Crowds Name Layout */
-  .hero-crowd-name-row {
-    top: 140px; /* Bring it up slightly */
-    padding: 0 15px;
-  }
-
-  .hero-crowd-name {
-    font-size: clamp(2rem, 12vw, 3.5rem);
-    letter-spacing: -1.5px;
-  }
-
-  /* Floating Nav Ergonomics */
-  .floating-nav {
-    bottom: 20px;
-    padding: 12px 18px;
-    width: 90%; /* More generous width on small screens */
-    justify-content: space-between;
-  }
-
-  .nav-links {
-    gap: 12px;
-  }
-
-  /* Section Padding */
-  section {
-    padding: 60px 20px;
-  }
-
-  /* Cinematic Parallax Text Legibility */
-  .cinematic-title {
-    font-size: 2.8rem;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
-  }
-  
-  .cinematic-text-inner {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 1.5rem 2rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .cinematic-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
-  }
-}
-
-/* Fix for landscape mobile or height-constrained devices */
-@media (max-height: 600px) and (max-width: 900px) {
-  .hero-crowd-name-row {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-/* =========================================
-   MOBILE PERFORMANCE & SCROLL OPTIMIZATION
+   MOBILE — Compact photo grid + text sandwich
+   Desktop CSS above is completely untouched.
    ========================================= */
 @media (max-width: 768px) {
-  /* Smooth momentum scrolling on iOS */
-  html, body {
-    -webkit-overflow-scrolling: touch;
-  }
 
-  /* Optimize parallax layers for GPU compositing */
-  .parallax-layer {
-    will-change: transform;
-    transform: translateZ(0);
-  }
-
-  /* Ensure images in parallax layers are always fully visible */
-  .parallax-layer-inner {
-    overflow: hidden;
-  }
-
-  .parallax-layer-inner img {
-    will-change: auto;
-    /* Disable image drag on mobile */
-    -webkit-user-drag: none;
-    user-select: none;
-    display: block;
-  }
-
-  /* Cinematic section: reduce height for better mobile experience */
+  /* Section becomes natural-height flex column */
   .cinematic-section {
-    /* Use vh + px to ensure enough scroll room */
-    min-height: 100vh;
+    height: auto !important;
+    overflow: visible;
+    padding: 48px 14px 40px;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Projects marquee: ensure cards are touchable */
-  .projects-marquee-track {
-    touch-action: pan-y;
+  /* Desktop sticky text + desktop layer canvas: hidden on mobile */
+  .cinematic-text-container { display: none !important; }
+  .cinematic-layers-desktop  { display: none !important; }
+
+  /* Mobile grid container: visible, stacked */
+  .cinematic-grid-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
   }
 
-  /* Ensure section headings don't overflow */
-  .section-label h2 {
-    overflow-wrap: break-word;
-    word-break: break-word;
+  /* ── Image rows ────────────────────────────────────────────────────────── */
+  .mobile-row {
+    display: grid;
+    gap: 8px;
   }
+
+  /* Top row: 3 equal portrait cards */
+  .mobile-row-top {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Bottom row: 3 + 2 staggered layout (6-col base) */
+  .mobile-row-bottom {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* First 3 in bottom: fill 2 cols each → row 1 complete */
+  .mobile-bot-1 { grid-column: span 2; }
+  .mobile-bot-2 { grid-column: span 2; }
+  .mobile-bot-3 { grid-column: span 2; }
+
+  /* Last 2 in bottom: fill 3 cols each → row 2 with wider cards */
+  .mobile-bot-4 { grid-column: span 3; }
+  .mobile-bot-5 { grid-column: span 3; }
+
+  /* ── Card style on mobile ──────────────────────────────────────────────── */
+  .mobile-card {
+    /* Override desktop absolute positioning */
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    left: unset !important;
+    right: unset !important;
+    top: unset !important;
+    bottom: unset !important;
+    border-radius: 0.75rem !important;
+    /* All cards portrait by default */
+    aspect-ratio: 3/4;
+    /* Reduce glass on mobile for perf */
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  /* Wider cards in bottom row 2 get landscape ratio */
+  .mobile-bot-4,
+  .mobile-bot-5 {
+    aspect-ratio: 16/9;
+  }
+
+  /* Mobile grid inner: always visible — no IntersectionObserver fade needed */
+  .cinematic-grid-mobile .parallax-layer-inner {
+    position: absolute;
+    inset: 0;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Also force is-visible state since mobile layers may not be observed */
+  .cinematic-grid-mobile .parallax-layer {
+    opacity: 1 !important;
+  }
+
+  /* Ensure media fills each card */
+  .cinematic-grid-mobile .parallax-layer img,
+  .cinematic-grid-mobile .parallax-layer video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ── Mobile text strip ─────────────────────────────────────────────────── */
+  .cinematic-text-mobile {
+    text-align: center;
+    padding: 18px 12px;
+  }
+
+  .cinematic-text-mobile .cinematic-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--text-muted, #9ca3af);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .cinematic-text-mobile .cinematic-title {
+    font-family: "Syne", sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+
+  /* Disable scroll-driven transforms on mobile — they'd break the grid */
+  .cinematic-section .cinematic-text-inner { transform: none !important; }
+  .cinematic-grid-mobile .parallax-layer   { transform: none !important; }
 }
 
+/* Compact cards slightly taller on very small phones */
+@media (max-width: 390px) {
+  .mobile-card { aspect-ratio: 2/3; }
+  .mobile-bot-4,
+  .mobile-bot-5 { aspect-ratio: 4/3; }
+}
 /* Respect prefers-reduced-motion: disable parallax animations */
 @media (prefers-reduced-motion: reduce) {
   .parallax-layer {
@@ -2086,14 +1902,9 @@ footer {
 }
 
 @media (max-width: 768px) {
-  /* Static collage on mobile — no parallax movement. */
-  .cinematic-section .cinematic-text-inner {
-    transform: none !important;
-  }
-
-  .cinematic-section .parallax-layer {
-    transform: none !important;
-  }
+  /* Mobile uses the grid layout — no scroll-driven transforms needed. */
+  .cinematic-section .cinematic-text-inner { transform: none !important; }
+  .cinematic-section .parallax-layer       { transform: none !important; opacity: 1 !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
