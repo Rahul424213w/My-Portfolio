@@ -5,10 +5,29 @@ export default function Cursor() {
 
   return (
     <div className="cursor" id="cursor" ref={cursorRef}>
-      <svg className="cursor-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+      {/* Linux DMZ-Black style arrow cursor */}
+      <svg
+        className="cursor-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        {/* White outline stroke for the classic Linux cursor border */}
         <path
-          fill="currentColor"
-          d="M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z"
+          d="M3 2L3 18L7.5 13.5L10.5 20L12.5 19L9.5 12.5L15.5 12.5L3 2Z"
+          fill="white"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+        {/* Black fill — the arrow body */}
+        <path
+          d="M3 2L3 18L7.5 13.5L10.5 20L12.5 19L9.5 12.5L15.5 12.5L3 2Z"
+          fill="black"
+          stroke="black"
+          strokeWidth="0.5"
+          strokeLinejoin="round"
         />
       </svg>
     </div>
